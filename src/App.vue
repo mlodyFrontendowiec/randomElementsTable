@@ -1,9 +1,12 @@
-<template>ok</template>
+<template><Container :movies="movies" /></template>
 
 <script>
+import Container from "./components/Container/Container.vue";
 export default {
   name: "App",
-
+  components: {
+    Container,
+  },
   data() {
     return {
       movies: [
@@ -25,6 +28,10 @@ export default {
 </script>
 
 <style>
+body {
+  margin: 0;
+  padding: 0;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
 }
