@@ -1,6 +1,11 @@
 <template>
   <section>
-    <MovieItem v-for="movie in movies" :movie="movie" :key="movie.id" />
+    <MovieItem
+      v-for="movie in movies"
+      :movie="movie"
+      :key="movie.id"
+      @click="selectMovieFunction(movie.id)"
+    />
   </section>
 </template>
 
@@ -8,6 +13,7 @@
 import MovieItem from "../MovieItem/MovieItem.vue";
 export default {
   name: "Container",
+  inject: ["selectMovieFunction"],
   components: {
     MovieItem,
   },

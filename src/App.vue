@@ -1,6 +1,12 @@
 <template>
   <div class="wrapper">
-    <section><button @click="shuffleArray">Mix Movies</button></section>
+    <section class="panel">
+      <button @click="shuffleArray">Mix Movies</button>
+      <form @submit.prevent="editMovieTitle">
+        <input type="text" v-model="movieTitle" ref="movieTitleInput" />
+        <button type="submit">Edit</button>
+      </form>
+    </section>
     <Container :movies="movies" />
   </div>
 </template>
@@ -12,6 +18,11 @@ export default {
   components: {
     Container,
   },
+  provide() {
+    return {
+      selectMovieFunction: this.selectMovie,
+    };
+  },
   data() {
     return {
       movies: [
@@ -22,11 +33,24 @@ export default {
         { id: 5, title: "The Wolf of Wall Street" },
         { id: 6, title: "Deadpool" },
       ],
+      selectedMovie: { id: 1 },
+      movieTitle: "",
     };
   },
   methods: {
     shuffleArray() {
       this.movies = this.movies.sort(() => Math.random() - 0.5);
+    },
+    selectMovie(id) {
+      this.selectedMovie = this.movies.find((movie) => movie.id === id);
+      this.movieTitle = this.selectedMovie.title;
+    },
+    editMovieTitle() {
+      this.movies.forEach((item) => {
+        if (item.id === this.selectedMovie.id) {
+          item.title = this.movieTitle;
+        }
+      });
     },
   },
 };
@@ -40,12 +64,27 @@ body {
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
 }
+form {
+  display: flex;
+  align-items: center;
+}
+input {
+  margin-right: 10px;
+  padding: 7px;
+  font-size: 16px;
+  outline: none;
+  border-radius: 6px;
+  border: none;
+}
 section {
   width: 50%;
   background-color: cadetblue;
   margin: 20px auto;
   padding: 10px 0;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
 }
 button {
   padding: 7px 14px;
@@ -54,7 +93,7 @@ button {
   box-shadow: rgba(0, 0, 0, 0.16) 0px 0.5px 4px, rgb(0, 0, 0) 0px 0px 0px 2px;
   cursor: pointer;
   display: block;
-  margin: 20px auto;
+  margin: 20px 0;
   font-size: 15px;
   color: white;
   background-color: rgb(103, 188, 190);
